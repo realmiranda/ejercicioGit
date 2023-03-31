@@ -1,0 +1,158 @@
+<nav>
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a [routerLink]="'/home'">Home</a></li>
+    <li class="breadcrumb-item"><a [routerLink]="'/home'">Inventory</a></li>
+    <li class="breadcrumb-item active">Automóviles</li>
+  </ol>
+</nav>
+<div class="card">
+  <div class="card-header">
+    <h4>{{titleCarList}}</h4>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-12">
+        <label>FILTRAR POR:</label>
+      </div>
+      <div class="col-md-12">
+        <input type="text" class="form-control w-100" [(ngModel)]="filterBy" (input)="getCars()"/>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <h6>Filtrado por: {{filterBy}}</h6>
+      </div>
+    </div>
+    <div class="row mt-4">
+      <div class="col-md-6">
+        <button class="btn btn-primary w-25" (click)="openModal()">Nuevo</button>
+      </div>
+    </div>
+    <hr />
+  </div>
+  <div class="table-responsive">
+    <table class="table" *ngIf="carList.length > 0">
+      <thead>
+        <tr>
+          <th colspan="7">
+            <button class="btn btn-success" (click)="toggleImage()">
+              {{ showImage ? "Ocultar" : "Mostrar"}} Imágenes
+            </button>
+          </th>
+          <th>
+            <div class="input-group input-group-sm">
+              <span class="input-group-text" id="basic-addon1">Filas: </span>
+              <select class="form-select form-select-sm" [(ngModel)]="itemsPerPage" (change)="changeItemsPerPage()">
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+                <option value="500">500</option>
+              </select>
+            </div>
+          </th>
+        </tr>
+        <tr class="text-primary">
+          <th *ngFor="let title of header">{{title.label}}</th>
+          <th class="text-center">Opciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let car of carList">
+          <td>
+            <p>
+              <img
+                [src]="car.foto"
+                [alt]="car.id"
+                [style.width.px]="imageWidth"
+                [style.margin.px]="imageMargin"
+                *ngIf="showImage"
+              />
+            </p>
+          </td>
+          <td>{{car.codigo}}</td>
+          <td>{{car.marca}}</td>
+          <td>
+            <a [routerLink]="['/car', car.id]">
+              {{car.modelo | lowercase | aEspacio:"-"}}
+            </a>
+          </td>
+          <td>{{car.anio}}</td>
+          <td>
+            <app-star [rating]="car.calificacion" (starClick)="onClickStar($event)"></app-star>
+          </td>
+          <td>{{car.usuario}}</td>
+          <td class="pointer text-danger text-center">
+            <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+              <a class="btn btn-sm btn-primary" [routerLink]="['/car', car.id]">Ver</a>
+              <button class="btn btn-sm btn-danger" (click)="deleteCar(car.id)">Eliminar</button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <app-pagination
+      (setPage)="setPage($event)"
+      [list]="carList"
+      [totalPages]="totalPages"
+      [itemsPerPage]="itemsPerPage"
+      [currentPage]="currentPage"
+    />
+
+  </div>
+</div>
+
+<div #exampleModal id="exampleModal" class="modal fade" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Crear auto</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="formCar">
+          <div class="mb-3">
+            <label class="form-label" for="inputName">Código</label>
+            <input type="text" class="form-control" id="inputName" placeholder="Código" formControlName="codigo" required minlength="3">
+            <app-validation-message [submitted]="wasValidated" [control]="formCar.controls['codigo']"/>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="inputMarca">Marca</label>
+            <input type="text" class="form-control" id="inputMarca" placeholder="Marca" formControlName="marca" required>
+            <app-validation-message [submitted]="wasValidated" [control]="formCar.controls['marca']"/>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="inputModel">Modelo</label>
+            <input type="text" class="form-control" id="inputModel" placeholder="Model" formControlName="modelo" required>
+            <app-validation-message [submitted]="wasValidated" [control]="formCar.controls['modelo']"/>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="inputYear">Año</label>
+            <input type="text" class="form-control" id="inputYear" placeholder="Year" formControlName="anio" required maxlength="4">
+            <app-validation-message [submitted]="wasValidated" [control]="formCar.controls['anio']"/>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="inputStars">Calificación</label>
+            <input type="number" class="form-control" id="inputStars" placeholder="Stars" formControlName="calificacion" required>
+            <app-validation-message [submitted]="wasValidated" [control]="formCar.controls['calificacion']"/>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="inputImage">Foto</label>
+            <input type="text" class="form-control" id="inputImage" placeholder="https://" formControlName="foto">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="createCar()">
+          Save changes
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

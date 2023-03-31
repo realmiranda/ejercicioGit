@@ -1,0 +1,88 @@
+<div class="card">
+  <div class="card-header">
+    <h3>{{titlePage + ': ' + car.marca + ' ' + car.modelo}}</h3>
+    <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+      <a class="btn btn-outline-primary w-110" *ngIf="!isEditable" (click)="edit()">Editar</a>
+      <a class="btn btn-danger w-110" *ngIf="isEditable" (click)="cancel()">Cancelar</a>
+      <a class="btn btn-primary w-110" *ngIf="isEditable" (click)="save()">Grabar</a>
+    </div>
+  </div>
+
+  <div class = 'container-fluid'>
+    <div class="row g-0">
+      <div class="col-6 container p-5">
+        <div class="row">
+          <img [src]="car.foto" class="card-img-top h-100" [alt]="car.modelo">
+        </div>
+        <div class="row">
+          <span>{{car.foto}}</span>
+        </div>
+      </div>
+      <div class="col-6 container p-5 d-block align-self-center">
+        <form [formGroup]="formCar">
+          <div class="mb-3 row">
+            <label for="code" class="col-sm-4 col-form-label">Codigo:</label>
+            <div class="col-sm-8">
+              <input
+                type="text"
+                [ngClass]="{'form-control-plaintext': !isEditable, 'form-control': isEditable}"
+                id="code"
+                formControlName="codigo">
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="marca" class="col-sm-4 col-form-label">Marca:</label>
+            <div class="col-sm-8">
+              <input
+                type="text"
+                [ngClass]="{'form-control-plaintext': !isEditable, 'form-control': isEditable}"
+                id="marca"
+                formControlName="marca">
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="model" class="col-sm-4 col-form-label">Modelo:</label>
+            <div class="col-sm-8">
+              <input
+                type="text"
+                [ngClass]="{'form-control-plaintext': !isEditable, 'form-control': isEditable}"
+                id="model"
+                formControlName="modelo">
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="year" class="col-sm-4 col-form-label">Año:</label>
+            <div class="col-sm-8">
+              <input
+                type="text"
+                [ngClass]="{'form-control-plaintext': !isEditable, 'form-control': isEditable}"
+                id="year"
+                formControlName="anio">
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="stars" class="col-sm-4 col-form-label">Calificacion</label>
+            <div class="col-sm-8">
+              <app-star [rating]="car.calificacion" *ngIf="!isEditable"></app-star>
+              <input
+                type="text"
+                [ngClass]="{'form-control-plaintext': !isEditable, 'form-control': isEditable}"
+                id="stars"
+                formControlName="calificacion"
+                *ngIf="isEditable">
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-footer d-flex justify-content-between">
+    <button class='btn btn-outline-secondary w-110' (click)="onBack()">
+      Back
+    </button>
+    <button type="button" class="btn btn-outline-primary w-110" (click)="buy()">Comprar</button>
+  </div>
+
+</div>
+
