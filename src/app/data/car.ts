@@ -6,7 +6,8 @@ export const CAR_HEADER = [
   { id: "modelo", label: "Modelo"},
   { id: "anio", label: "Año"},
   { id: "calificacion", label: "Calificación"},
-  { id: "usuario", label: "Usuario"},
+  { id: "usuario", label: "Creado por:"},
+  { id: "usuario_mod", label: "Actualizado por:"},
 ];
 
 export const CAR_LIST = [

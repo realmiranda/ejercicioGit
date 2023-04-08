@@ -15,7 +15,7 @@
         <label>FILTRAR POR:</label>
       </div>
       <div class="col-md-12">
-        <input type="text" class="form-control w-100" [(ngModel)]="filterBy" (input)="getCars()"/>
+        <input type="text" class="form-control w-100" [(ngModel)]="filterBy" (input)="filterCars()"/>
       </div>
     </div>
     <div class="row">
@@ -34,7 +34,7 @@
     <table class="table" *ngIf="carList.length > 0">
       <thead>
         <tr>
-          <th colspan="7">
+          <th colspan="8">
             <button class="btn btn-success" (click)="toggleImage()">
               {{ showImage ? "Ocultar" : "Mostrar"}} Imágenes
             </button>
@@ -83,6 +83,7 @@
             <app-star [rating]="car.calificacion" (starClick)="onClickStar($event)"></app-star>
           </td>
           <td>{{car.usuario}}</td>
+          <td>{{car.usuario_mod}}</td>
           <td class="pointer text-danger text-center">
             <div class="btn-group" role="group" aria-label="Basic mixed styles example">
               <a class="btn btn-sm btn-primary" [routerLink]="['/car', car.id]">Ver</a>
@@ -130,7 +131,7 @@
           </div>
           <div class="mb-3">
             <label class="form-label" for="inputYear">Año</label>
-            <input type="text" class="form-control" id="inputYear" placeholder="Year" formControlName="anio" required maxlength="4">
+            <input type="text" class="form-control" id="inputYear" placeholder="Year" formControlName="anio" required minlength="4">
             <app-validation-message [submitted]="wasValidated" [control]="formCar.controls['anio']"/>
           </div>
           <div class="mb-3">

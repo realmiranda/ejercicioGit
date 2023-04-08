@@ -27,7 +27,7 @@
                 type="text"
                 [ngClass]="{'form-control-plaintext': !isEditable, 'form-control': isEditable}"
                 id="code"
-                formControlName="codigo">
+                formControlName="codigo" required>
             </div>
           </div>
           <div class="mb-3 row">
@@ -37,7 +37,8 @@
                 type="text"
                 [ngClass]="{'form-control-plaintext': !isEditable, 'form-control': isEditable}"
                 id="marca"
-                formControlName="marca">
+                formControlName="marca" required>
+              <app-validation-message [submitted]="wasValidated" [control]="formCar.controls['marca']"/>
             </div>
           </div>
           <div class="mb-3 row">
@@ -47,7 +48,8 @@
                 type="text"
                 [ngClass]="{'form-control-plaintext': !isEditable, 'form-control': isEditable}"
                 id="model"
-                formControlName="modelo">
+                formControlName="modelo" required>
+              <app-validation-message [submitted]="wasValidated" [control]="formCar.controls['modelo']"/>
             </div>
           </div>
           <div class="mb-3 row">
@@ -57,7 +59,8 @@
                 type="text"
                 [ngClass]="{'form-control-plaintext': !isEditable, 'form-control': isEditable}"
                 id="year"
-                formControlName="anio">
+                formControlName="anio" required minlength="4">
+              <app-validation-message [submitted]="wasValidated" [control]="formCar.controls['anio']"/>
             </div>
           </div>
           <div class="mb-3 row">
@@ -69,7 +72,8 @@
                 [ngClass]="{'form-control-plaintext': !isEditable, 'form-control': isEditable}"
                 id="stars"
                 formControlName="calificacion"
-                *ngIf="isEditable">
+                *ngIf="isEditable" required>
+              <app-validation-message [submitted]="wasValidated" [control]="formCar.controls['calificacion']"/>
             </div>
           </div>
         </form>

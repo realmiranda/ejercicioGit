@@ -8,6 +8,7 @@ export interface Auto {
   anio: number,
   calificacion: number,
   usuario?: string,
+  usuario_mod?: string,
 
   name?: string,
   color?: string,

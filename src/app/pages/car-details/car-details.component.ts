@@ -14,6 +14,7 @@ export class CarDetailsComponent implements OnInit {
   titlePage: string = "Detalle de autos";
   car: Auto = <Auto> {};
   isEditable: boolean = false;
+  wasValidated: boolean = false;
 
   formCar: FormGroup;
 
@@ -27,7 +28,7 @@ export class CarDetailsComponent implements OnInit {
       codigo: new FormControl("", [Validators.required]),
       marca: new FormControl("", [Validators.required]),
       modelo: new FormControl("", [Validators.required]),
-      anio: new FormControl("", [Validators.required]),
+      anio: new FormControl("", [Validators.required, Validators.min(4)]),
       calificacion: new FormControl(0, [Validators.required]),
     });
   }
@@ -56,7 +57,6 @@ export class CarDetailsComponent implements OnInit {
     this.formCar.controls['modelo'].setValue(this.car.modelo);
     this.formCar.controls['anio'].setValue(this.car.anio);
     this.formCar.controls['codigo'].setValue(this.car.codigo);
-    this.formCar.controls['id'].setValue(this.car.id);
     this.formCar.controls['foto'].setValue(this.car.foto);
     this.formCar.controls['calificacion'].setValue(this.car.calificacion);
   }
@@ -72,26 +72,33 @@ export class CarDetailsComponent implements OnInit {
 
   save(): void {
     let carUpdated: Auto = {...this.formCar.value};
-    this.carsService.updateCar(carUpdated, this.car.id).subscribe((response: Response)=>{
-        if(response.codigo == 1){
-          this.isEditable = false;
-          this.car.marca = this.formCar.controls['marca'].value;
-          this.car.codigo = this.formCar.controls['codigo'].value;
-          this.car.modelo = this.formCar.controls['modelo'].value;
-          this.car.calificacion = this.formCar.controls['calificacion'].value;
-          this.car.foto = this.formCar.controls['foto'].value;
-          this.car.anio = this.formCar.controls['anio'].value;
+    this.wasValidated = true;
+
+    if (this.formCar.valid) {
+      this.carsService.updateCar(carUpdated, this.car.id).subscribe((response: Response) => {
           alert(response.mensaje);
-        }
-      },
-      (errorHttp: HttpErrorResponse) => {
-        let message = errorHttp.error.mensaje;
-        message += errorHttp.error.error?.codigo ? (' - ' + errorHttp.error.error?.codigo) : "";
-        message += errorHttp.error.error?.marca ? (' - ' + errorHttp.error.error?.marca) : "";
-        message += errorHttp.error.error?.modelo ? (' - ' + errorHttp.error.error?.modelo) : "";
-        message += errorHttp.error.error?.anio ? (' - ' + errorHttp.error.error?.anio) : "";
-        alert(message);
-      });
+
+          if (response.codigo == 1) {
+            this.isEditable = false;
+            this.car.marca = this.formCar.controls['marca'].value;
+            this.car.codigo = this.formCar.controls['codigo'].value;
+            this.car.modelo = this.formCar.controls['modelo'].value;
+            this.car.calificacion = this.formCar.controls['calificacion'].value;
+            this.car.foto = this.formCar.controls['foto'].value;
+            this.car.anio = this.formCar.controls['anio'].value;
+            this.wasValidated = false;
+          }
+        },
+        (errorHttp: HttpErrorResponse) => {
+          let message = errorHttp.error.mensaje;
+          message += errorHttp.error.error?.codigo ? (' - ' + errorHttp.error.error?.codigo) : "";
+          message += errorHttp.error.error?.marca ? (' - ' + errorHttp.error.error?.marca) : "";
+          message += errorHttp.error.error?.modelo ? (' - ' + errorHttp.error.error?.modelo) : "";
+          message += errorHttp.error.error?.anio ? (' - ' + errorHttp.error.error?.anio) : "";
+          alert(message);
+          this.wasValidated = false;
+        });
+    }
   }
 
   onBack(): void {

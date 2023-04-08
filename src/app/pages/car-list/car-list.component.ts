@@ -45,7 +45,7 @@ export class CarListComponent implements OnInit {
       codigo: new FormControl("", [Validators.required]),
       marca: new FormControl("", [Validators.required]),
       modelo: new FormControl("", [Validators.required]),
-      anio: new FormControl("", [Validators.required]),
+      anio: new FormControl("", [Validators.required, Validators.min(4)]),
       calificacion: new FormControl(0, [Validators.required]),
     });
   }
@@ -57,6 +57,10 @@ export class CarListComponent implements OnInit {
     this.myModal = new bootstrap.Modal(element);
   }
 
+  filterCars(): void {
+    this.currentPage = 1;
+    this.getCars();
+  }
 
   getCars(): void {
     this.carsService.getCarList(this.filterBy, this.itemsPerPage, this.currentPage).subscribe(
