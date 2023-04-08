@@ -136,7 +136,7 @@
           </div>
           <div class="mb-3">
             <label class="form-label" for="inputStars">Calificación</label>
-            <input type="number" class="form-control" id="inputStars" placeholder="Stars" formControlName="calificacion" required>
+            <input type="number" class="form-control" id="inputStars" placeholder="Stars" formControlName="calificacion" required max="5" min="1">
             <app-validation-message [submitted]="wasValidated" [control]="formCar.controls['calificacion']"/>
           </div>
           <div class="mb-3">
