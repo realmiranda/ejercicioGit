@@ -42,11 +42,11 @@ export class CarListComponent implements OnInit {
   ) {
     this.formCar = new FormGroup({
       foto: new FormControl(""),
-      codigo: new FormControl("", [Validators.required]),
+      codigo: new FormControl("", [Validators.required, Validators.minLength(3)]),
       marca: new FormControl("", [Validators.required]),
       modelo: new FormControl("", [Validators.required]),
-      anio: new FormControl("", [Validators.required, Validators.min(4)]),
-      calificacion: new FormControl(0, [Validators.required]),
+      anio: new FormControl("", [Validators.required, Validators.minLength(4)]),
+      calificacion: new FormControl(0, [Validators.required, Validators.max(5), Validators.min(1)]),
     });
   }
 
