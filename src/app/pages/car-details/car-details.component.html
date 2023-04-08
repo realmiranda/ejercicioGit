@@ -27,7 +27,7 @@
                 type="text"
                 [ngClass]="{'form-control-plaintext': !isEditable, 'form-control': isEditable}"
                 id="code"
-                formControlName="codigo" required>
+                formControlName="codigo" required minlength="3">
             </div>
           </div>
           <div class="mb-3 row">
@@ -72,7 +72,7 @@
                 [ngClass]="{'form-control-plaintext': !isEditable, 'form-control': isEditable}"
                 id="stars"
                 formControlName="calificacion"
-                *ngIf="isEditable" required>
+                *ngIf="isEditable" required max="5" min="1">
               <app-validation-message [submitted]="wasValidated" [control]="formCar.controls['calificacion']"/>
             </div>
           </div>
