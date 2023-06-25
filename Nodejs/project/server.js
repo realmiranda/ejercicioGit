@@ -4,7 +4,7 @@ const app = require("./app");
 const port = 3700;
 
 mongoose.Promise = global.Promise;
-mongoose.connect("mongodb+srv://admin:aceleradigital@cluster0.jfokgq7.mongodb.net/course", {
+mongoose.connect("mongodb:write:your:URL", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 }).then(() => {
